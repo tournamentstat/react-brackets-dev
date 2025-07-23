@@ -1,6 +1,7 @@
 import React from "react";
-import { Bracket, Seed, SeedItem, SeedTeam, SingleLineSeed, type IRoundProps, type IRenderSeedProps } from "../react-brackets";
+import { Bracket, SeedItem, SeedTeam, SingleLineSeed, type IRoundProps, type IRenderSeedProps } from "../react-brackets";
 import {RoundTitle} from "../react-brackets/components/round";
+import {Seed} from "../react-brackets/brackets/Seed";
 
 // Demo data for 8 participants (single elimination, 3 rounds)
 // const rounds: IRoundProps[] = [
@@ -168,9 +169,10 @@ const Schema = {
       seeds: [
         {id: 4, parentid: 8},
         {id: 3, parentid: 7},
-        //{id: 2, parentid: 6},
+        {id: 2, parentid: 7},
         {id: 1, parentid: 5},
-      ]
+      ],
+      //singleLined: true
     },
     {
       id: 3,
@@ -198,24 +200,17 @@ const Schema = {
 }
 
 // Optional: Custom seed renderer (to show team names and add custom content)
-const CustomSeed = ({ seed, breakpoint, roundIndex, seedIndex, isSingle }: IRenderSeedProps & {isSingle?: boolean}) => {
-  const seedObj = Seeds.find(x=>x.id === seed.id);
+const CustomSeed = (props: IRenderSeedProps) => {
+  const seedObj = Seeds.find(x=>x.id === props.seed.id);
   return (
-      !isSingle ? <Seed virtual={seed.virtual} mobileBreakpoint={breakpoint}>
+      <Seed {...props}>
         <SeedItem>
           <div>
             <SeedTeam>{seedObj?.teams[0]?.name || "NO TEAM"}</SeedTeam>
             <SeedTeam>{seedObj?.teams[0]?.name || "NO TEAM"}</SeedTeam>
           </div>
         </SeedItem>
-      </Seed> : <SingleLineSeed mobileBreakpoint={breakpoint}>
-        <SeedItem>
-          <div>
-            <SeedTeam>{seedObj?.teams && (seedObj.teams[0]?.name || "NO TEAM")}</SeedTeam>
-            <SeedTeam>{seedObj?.teams && (seedObj.teams[0]?.name || "NO TEAM")}</SeedTeam>
-          </div>
-        </SeedItem>
-      </SingleLineSeed>
+      </Seed>
   );
  }
 

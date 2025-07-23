@@ -2,10 +2,9 @@ import React, { Fragment } from 'react';
 import { Round, Bracket, SeedsList } from '../components/round';
 import SwipeableViews from 'react-swipeable-views';
 import useMedia from '../hooks/useMedia';
-//import { renderSeed, renderTitle } from '../utils/renders';
 import { ISingleEliminationProps } from '../types/SingleElimination';
-//import { IRoundProps } from '../types/Rounds';
-import {SchemaInterface} from '../types/Seed';
+import {SchemaInterface} from '../types/Schema';
+import {IRoundProps} from "../types/Rounds";
 
 const SingleElimination = ({
   schema,
@@ -25,7 +24,9 @@ const SingleElimination = ({
     seed: {id: number, virtual: boolean},
     roundIdx: number,
     idx: number,
-    isMiddleOfTwoSided: any
+    isMiddleOfTwoSided: any,
+    singleLined: boolean,
+    virtual: boolean
   ) => (
     <Fragment key={seed.id}>
       {renderSeedComponent({
@@ -34,6 +35,8 @@ const SingleElimination = ({
         roundIndex: roundIdx,
         seedIndex: idx,
         isMiddleOfTwoSided,
+        singleLined: singleLined,
+        virtual: virtual
       })}
     </Fragment>
   );
@@ -41,16 +44,18 @@ const SingleElimination = ({
   const tree = (schema: SchemaInterface) => {
     const rounds = schema.rounds;
     let virtual_seeds_counter = 0;
-    const virtual_seed = () => {
+    const virtual_seed = (singleLined: boolean) => {
       return ({
         id: --virtual_seeds_counter,
-        virtual: true
+        virtual: true,
+        singleLined: singleLined
       })
     }
-    const real_seed = (id: number) => {
+    const real_seed = (id: number, singleLined: boolean) => {
       return ({
         id: id,
-        virtual: false
+        virtual: false,
+        singleLined: singleLined
       });
     }
     const depth = rounds.length;
@@ -59,29 +64,30 @@ const SingleElimination = ({
     const final_seed = final_round.seeds[0];
     const tree = [{
         id: final_round.id,
-        seeds: [real_seed(final_seed.id)]
+        seeds: [real_seed(final_seed.id, final_round.singleLined ?? false)]
     }];
     for (let i = 1; i<depth; i++) {
         const roundSeeds = [];
-            for(let j=0; j < 2 ** (i-1); j++) {
+            const singleLined = rounds[depth-i-1].singleLined ?? false;
+            for(let j=0; j < tree[i-1].seeds.length; j++) {
                 const previous_tour_seed = tree[i-1].seeds[j];
                 if (previous_tour_seed.virtual) {
-                    roundSeeds.push(virtual_seed());
-                    roundSeeds.push(virtual_seed());
+                    roundSeeds.push(virtual_seed(singleLined));
+                    if(!singleLined) roundSeeds.push(virtual_seed(singleLined));
                 } else {
                     const child_contests = rounds[depth-i-1].seeds.filter(x=> x.parentid === previous_tour_seed.id)??[];
                     switch (child_contests.length){
                         case 1:
-                            roundSeeds.push(real_seed(child_contests[0].id));
-                            roundSeeds.push(virtual_seed());
+                            roundSeeds.push(real_seed(child_contests[0].id, singleLined));
+                            if(!singleLined) roundSeeds.push(virtual_seed(singleLined));
                             break;
                         case 2:
-                            roundSeeds.push(real_seed(child_contests[0].id));
-                            roundSeeds.push(real_seed(child_contests[1].id));
+                            roundSeeds.push(real_seed(child_contests[0].id, singleLined));
+                            if(!singleLined) roundSeeds.push(real_seed(child_contests[1].id, singleLined));
                             break;
                         default:
-                            roundSeeds.push(virtual_seed());
-                            roundSeeds.push(virtual_seed());
+                            roundSeeds.push(virtual_seed(singleLined));
+                            if(!singleLined) roundSeeds.push(virtual_seed(singleLined));
                     }
                 }
             }
@@ -90,7 +96,6 @@ const SingleElimination = ({
                 seeds: roundSeeds
             })
         }
-    console.log(tree);
     return tree.reverse();
   }
 
@@ -99,7 +104,7 @@ const SingleElimination = ({
       {roundTitleComponent(round.id, roundIdx)}
       <SeedsList>
         {round.seeds.map((seed, idx) => {
-          return getFragment(seed, roundIdx, idx,false);
+          return getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual);
         })}
       </SeedsList>
     </Round>

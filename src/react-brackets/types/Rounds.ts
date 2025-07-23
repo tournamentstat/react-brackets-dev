@@ -1,7 +1,4 @@
-import { ISeedProps } from './Seed';
-
 export type IRoundProps = {
-  seeds: ISeedProps[];
-  title: string;
+  id: number;
   [key: string]: any;
 };

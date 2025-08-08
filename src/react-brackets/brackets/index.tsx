@@ -21,7 +21,7 @@ const SingleElimination = ({
   const isResponsive = useMedia(mobileBreakpoint);
 
   const getFragment = (
-    seed: {id: number, virtual: boolean},
+    seed: {id: number, singleLined: boolean, virtual: boolean},
     roundIdx: number,
     idx: number,
     isMiddleOfTwoSided: any,
@@ -99,7 +99,8 @@ const SingleElimination = ({
     return tree.reverse();
   }
 
-  const data = tree(schema).map((round, roundIdx) => (
+  const rounds = tree(schema);
+  const data = rounds.map((round, roundIdx) => (
     <Round key={round.id} className={roundClassName} mobileBreakpoint={mobileBreakpoint}>
       {roundTitleComponent(round.id, roundIdx)}
       <SeedsList>
@@ -122,39 +123,39 @@ const SingleElimination = ({
     );
   }
 
-  // const getRenderedRounds = (
-  //   roundsStartIndex: number,
-  //   roundsEndIndex: number,
-  //   renderFirstHalfOfRoundsSeeds: boolean,
-  //   rounds: IRoundProps[],
-  //   dir: string
-  // ) =>
-  //   rounds.slice(roundsStartIndex, roundsEndIndex).map((round, roundIdx) => (
-  //     <Round key={round.title} className={roundClassName} mobileBreakpoint={mobileBreakpoint}>
-  //       {round.title && roundTitleComponent(round.title, roundIdx)}
-  //       <SeedsList dir={dir}>
-  //         {renderFirstHalfOfRoundsSeeds
-  //           ? round.seeds
-  //               .slice(0, round.seeds.length / 2)
-  //               .map((seed, idx) => getFragment(seed, roundIdx, idx, rounds, false))
-  //           : round.seeds
-  //               .slice(round.seeds.length / 2, round.seeds.length)
-  //               .map((seed, idx) => getFragment(seed, roundIdx, idx, rounds, roundIdx < roundsEndIndex - 2))}
-  //       </SeedsList>
-  //     </Round>
-  //   ));
-  //
-  // if (twoSided) {
-  //   return (
-  //     <Bracket className={bracketClassName} mobileBreakpoint={mobileBreakpoint}>
-  //       {[
-  //         getRenderedRounds(0, rounds.length - 1, true, rounds, 'ltr'),
-  //         getRenderedRounds(rounds.length - 1, rounds.length, false, rounds, 'twoSided'),
-  //         getRenderedRounds(1, rounds.length, false, [...rounds].reverse(), 'rtl'),
-  //       ]}
-  //     </Bracket>
-  //   );
-  // }
+  const getRenderedRounds = (
+    roundsStartIndex: number,
+    roundsEndIndex: number,
+    renderFirstHalfOfRoundsSeeds: boolean,
+    rounds: IRoundProps[],
+    dir: string
+  ) =>
+    rounds.slice(roundsStartIndex, roundsEndIndex).map((round, roundIdx) => (
+      <Round key={round.title} className={roundClassName} mobileBreakpoint={mobileBreakpoint}>
+        {round.title && roundTitleComponent(round.title, roundIdx)}
+        <SeedsList dir={dir}>
+          {renderFirstHalfOfRoundsSeeds
+            ? round.seeds
+                .slice(0, round.seeds.length / 2)
+                .map((seed: {id: number, singleLined: boolean, virtual: boolean}, idx: number) => getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual))
+            : round.seeds
+                .slice(round.seeds.length / 2, round.seeds.length)
+                .map((seed: {id: number, singleLined: boolean, virtual: boolean}, idx: number) => getFragment(seed, roundIdx, idx, roundIdx < roundsEndIndex - 2, seed.singleLined, seed.virtual))}
+        </SeedsList>
+      </Round>
+    ));
+
+  if (twoSided) {
+    return (
+      <Bracket className={bracketClassName} mobileBreakpoint={mobileBreakpoint}>
+        {[
+          getRenderedRounds(0, rounds.length - 1, true, rounds, 'ltr'),
+          getRenderedRounds(rounds.length - 1, rounds.length, false, rounds, 'twoSided'),
+          getRenderedRounds(1, rounds.length, false, [...rounds].reverse(), 'rtl'),
+        ]}
+      </Bracket>
+    );
+  }
 
   return (
     <Bracket className={bracketClassName} dir={rtl ? 'rtl' : 'ltr'} mobileBreakpoint={mobileBreakpoint}>

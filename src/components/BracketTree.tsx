@@ -223,7 +223,7 @@ const BracketTree = () => {
   return (
       <div style={{width: "100%", overflowX: "auto"}}>
         <h2>Test bracket with hidden (virtual) seeds</h2>
-        <Bracket schema={Schema} renderSeedComponent={CustomSeed} roundTitleComponent={RoundTitleComponent}/>
+        <Bracket schema={Schema} renderSeedComponent={CustomSeed} roundTitleComponent={RoundTitleComponent} twoSided/>
       </div>
   );
 }

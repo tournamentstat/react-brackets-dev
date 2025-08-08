@@ -1,4 +1,8 @@
-export type IRoundProps = {
+export type TreeRoundProps = {
   id: number;
-  [key: string]: any;
+  seeds: {
+    id: number;
+    singleLined: boolean;
+    virtual: boolean;
+  } [];
 };

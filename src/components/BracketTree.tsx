@@ -1,5 +1,5 @@
 import React from "react";
-import { Bracket, SeedItem, SeedTeam, SingleLineSeed, type IRoundProps, type IRenderSeedProps } from "../react-brackets";
+import { Bracket, SeedItem, SeedTeam, type IRenderSeedProps } from "../react-brackets";
 import {RoundTitle} from "../react-brackets/components/round";
 import {Seed} from "../react-brackets/brackets/Seed";
 
@@ -172,7 +172,7 @@ const Schema = {
         {id: 2, parentid: 7},
         {id: 1, parentid: 5},
       ],
-      //singleLined: true
+      singleLined: true
     },
     {
       id: 3,

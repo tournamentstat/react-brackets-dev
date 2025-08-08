@@ -4,7 +4,8 @@ import SwipeableViews from 'react-swipeable-views';
 import useMedia from '../hooks/useMedia';
 import { ISingleEliminationProps } from '../types/SingleElimination';
 import {SchemaInterface} from '../types/Schema';
-import {IRoundProps} from "../types/Rounds";
+import {TreeSeedProps} from "../types/Seed";
+import {TreeRoundProps} from "../types/Rounds";
 
 const SingleElimination = ({
   schema,
@@ -21,7 +22,7 @@ const SingleElimination = ({
   const isResponsive = useMedia(mobileBreakpoint);
 
   const getFragment = (
-    seed: {id: number, singleLined: boolean, virtual: boolean},
+    seed: TreeSeedProps,
     roundIdx: number,
     idx: number,
     isMiddleOfTwoSided: any,
@@ -127,20 +128,20 @@ const SingleElimination = ({
     roundsStartIndex: number,
     roundsEndIndex: number,
     renderFirstHalfOfRoundsSeeds: boolean,
-    rounds: IRoundProps[],
+    rounds: TreeRoundProps[],
     dir: string
   ) =>
     rounds.slice(roundsStartIndex, roundsEndIndex).map((round, roundIdx) => (
-      <Round key={round.title} className={roundClassName} mobileBreakpoint={mobileBreakpoint}>
-        {round.title && roundTitleComponent(round.title, roundIdx)}
+      <Round key={round.id} className={roundClassName} mobileBreakpoint={mobileBreakpoint}>
+        {roundTitleComponent(round.id, roundIdx)}
         <SeedsList dir={dir}>
           {renderFirstHalfOfRoundsSeeds
             ? round.seeds
                 .slice(0, round.seeds.length / 2)
-                .map((seed: {id: number, singleLined: boolean, virtual: boolean}, idx: number) => getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual))
+                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual))
             : round.seeds
                 .slice(round.seeds.length / 2, round.seeds.length)
-                .map((seed: {id: number, singleLined: boolean, virtual: boolean}, idx: number) => getFragment(seed, roundIdx, idx, roundIdx < roundsEndIndex - 2, seed.singleLined, seed.virtual))}
+                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, roundIdx < roundsEndIndex - 2, seed.singleLined, seed.virtual))}
         </SeedsList>
       </Round>
     ));

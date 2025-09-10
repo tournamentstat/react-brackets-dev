@@ -3,7 +3,7 @@ import {IRenderSeedProps} from './Seed';
 import {SchemaInterface} from './Schema';
 import React from "react";
 
-export interface ISingleEliminationProps {
+export interface TreeProps {
   // If true, the component direction will be set to RTL
   rtl?: boolean;
   // Array of rounds matching RoundProps shape,

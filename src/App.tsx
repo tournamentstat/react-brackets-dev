@@ -1,9 +1,9 @@
 import React from 'react';
-import BracketTree from "./components/BracketTree";
+import Bracket from "./components/Bracket";
 
 function App() {
   return (
-      <BracketTree />
+      <Bracket />
   );
 }
 

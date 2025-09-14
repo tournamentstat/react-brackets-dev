@@ -65,7 +65,7 @@ export const Tree = ({
     const final_seed = final_round.seeds[0];
     const tree = [{
         id: final_round.id,
-        seeds: [real_seed(final_seed.id, final_round.singleLined ?? false)]
+        seeds: [real_seed(final_seed.id, (final_round.singleLined ?? false) || twoSided)]
     }];
     for (let i = 1; i<depth; i++) {
         const roundSeeds = [];

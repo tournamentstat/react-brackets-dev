@@ -68,6 +68,20 @@ font-size: 14px;
     [dir="ltr"] & {
       right: -1.5em;
     }
+    [dir="twoSided"] & {
+      right: -1.5em;
+    }
+  }
+  &::before {
+      content: "";
+      position: absolute;
+      height: 50%;
+      width: 3em;
+      border-bottom: 1px solid #707070;
+      top: -0.5px;
+    [dir="twoSided"] & {
+      left: -1.5em;
+    }
   }
   &:nth-child(even)::after {
     border-bottom: 1px solid #707070;

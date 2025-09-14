@@ -2,7 +2,7 @@ import React from "react";
 import {SeedItem, SeedTeam, type IRenderSeedProps} from "../react-brackets";
 import {RoundTitle} from "../react-brackets/components/round";
 import {Seed} from "../react-brackets/brackets/Seed";
-import {DoubleElimination} from "../react-brackets/brackets";
+import {DoubleElimination, SingleElimination} from "../react-brackets/brackets";
 import {etapData} from "./etapDataFixture";
 
 const CustomSeed = (props: IRenderSeedProps) => {
@@ -28,7 +28,7 @@ const Bracket = () => {
   return (
       <div style={{width: "100%", overflowX: "auto", textAlign: "center"}}>
         <h1>Double elimination bracket</h1>
-        <DoubleElimination data={etapData} renderSeedComponent={CustomSeed} roundTitleComponent={RoundTitleComponent} />
+        <DoubleElimination data={etapData} renderSeedComponent={CustomSeed} roundTitleComponent={RoundTitleComponent} twoSided/>
       </div>
   );
 }

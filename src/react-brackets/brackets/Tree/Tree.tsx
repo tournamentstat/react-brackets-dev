@@ -27,7 +27,8 @@ export const Tree = ({
     idx: number,
     isMiddleOfTwoSided: any,
     singleLined: boolean,
-    virtual: boolean
+    virtual: boolean,
+    rounds: any
   ) => (
     <Fragment key={seed.id}>
       {renderSeedComponent({
@@ -37,7 +38,8 @@ export const Tree = ({
         seedIndex: idx,
         isMiddleOfTwoSided,
         singleLined: singleLined,
-        virtual: virtual
+        virtual: virtual,
+        rounds: rounds
       })}
     </Fragment>
   );
@@ -65,7 +67,8 @@ export const Tree = ({
     const final_seed = final_round.seeds[0];
     const tree = [{
         id: final_round.id,
-        seeds: [real_seed(final_seed.id, (final_round.singleLined ?? false) || twoSided)]
+        seeds: [real_seed(final_seed.id, (final_round.singleLined ?? false) || twoSided)],
+        final: true
     }];
     for (let i = 1; i<depth; i++) {
         const roundSeeds = [];
@@ -94,7 +97,8 @@ export const Tree = ({
             }
             tree.push({
                 id: rounds[depth-i-1].id,
-                seeds: roundSeeds
+                seeds: roundSeeds,
+                final: false
             })
         }
     return tree.reverse();
@@ -106,7 +110,7 @@ export const Tree = ({
       {roundTitleComponent(round.id, roundIdx)}
       <SeedsList>
         {round.seeds.map((seed, idx) => {
-          return getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual);
+          return getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual, rounds);
         })}
       </SeedsList>
     </Round>
@@ -138,10 +142,10 @@ export const Tree = ({
           {renderFirstHalfOfRoundsSeeds
             ? round.seeds
                 .slice(0, round.seeds.length / 2)
-                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual))
+                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, false, seed.singleLined, seed.virtual, rounds))
             : round.seeds
                 .slice(round.seeds.length / 2, round.seeds.length)
-                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, roundIdx < roundsEndIndex - 2, seed.singleLined, seed.virtual))}
+                .map((seed, idx: number) => getFragment(seed, roundIdx, idx, roundIdx < roundsEndIndex - 2, seed.singleLined, seed.virtual, rounds))}
         </SeedsList>
       </Round>
     ));

@@ -481,6 +481,64 @@ export const etapData = {
       "parentid": null,
       "competitors_count": 1,
       "etap": 8751
+    },
+    {
+      "id": 18328,
+      "contest_members": [
+        {
+          "id": 43634,
+          "season_tournament_team": null,
+          "season_tournament_person": null,
+          "contest_place": null,
+          "parent_contest": null,
+          "parent_contest_place": null,
+          "bonuses": null,
+          "contest": 18328
+        },
+        {
+          "id": 43635,
+          "season_tournament_team": null,
+          "season_tournament_person": null,
+          "contest_place": null,
+          "parent_contest": null,
+          "parent_contest_place": null,
+          "bonuses": null,
+          "contest": 18328
+        }
+      ],
+      "name": null,
+      "parentid": null,
+      "competitors_count": 1,
+      "etap": 8751
+    },
+    {
+      "id": 18329,
+      "contest_members": [
+        {
+          "id": 43636,
+          "season_tournament_team": null,
+          "season_tournament_person": null,
+          "contest_place": null,
+          "parent_contest": null,
+          "parent_contest_place": null,
+          "bonuses": null,
+          "contest": 18329
+        },
+        {
+          "id": 43637,
+          "season_tournament_team": null,
+          "season_tournament_person": null,
+          "contest_place": null,
+          "parent_contest": null,
+          "parent_contest_place": null,
+          "bonuses": null,
+          "contest": 18329
+        }
+      ],
+      "name": null,
+      "parentid": null,
+      "competitors_count": 1,
+      "etap": 8751
     }
   ],
   "etap_tours": [
@@ -516,7 +574,7 @@ export const etapData = {
     {
       "id": 1141518,
       "contests_list": [
-        18320
+        18320, 18329
       ],
       "name": "Final",
       "etap": 8751
@@ -551,7 +609,7 @@ export const etapData = {
     {
       "id": 1141522,
       "contests_list": [
-        18327
+        18327, 18328
       ],
       "name": "L.Final",
       "etap": 8751

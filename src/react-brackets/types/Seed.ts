@@ -10,10 +10,11 @@ export type TreeSeedProps = {
 
 export interface IRenderSeedProps {
   seed: {id: number; virtual: boolean};
-  breakpoint: number;
+  breakpoint: number | undefined;
   roundIndex: number;
   isMiddleOfTwoSided: boolean;
   seedIndex: number;
   virtual?: boolean;
   singleLined?: boolean;
+  rounds: any;
 }

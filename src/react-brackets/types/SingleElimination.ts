@@ -1,5 +1,5 @@
 import { SwipeableViewsProps } from 'react-swipeable-views';
-import {IRenderSeedProps} from './Seed';
+import {IRenderSeedProps, TreeSeedProps} from './Seed';
 import {SchemaInterface} from './Schema';
 import React from "react";
 
@@ -26,7 +26,16 @@ export interface TreeProps {
    * @param {number} breakpoint the breakpoint used to determine responsive size
    * @param {number} roundIdx the current round index
    */
-  renderSeedComponent: (props: IRenderSeedProps) => React.JSX.Element;
+  renderSeedComponent: (props: {
+    seed: TreeSeedProps;
+    breakpoint: number | undefined;
+    roundIndex: number;
+    seedIndex: number;
+    isMiddleOfTwoSided: any;
+    singleLined: boolean;
+    virtual: boolean;
+    rounds: any
+  }) => React.JSX.Element;
   /** @default false, if true component will be two-sided tournament **/
   twoSided?: boolean;
 }

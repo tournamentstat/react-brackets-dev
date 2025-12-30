@@ -98,7 +98,7 @@ font-size: 14px;
 export const DoubleLineSeed = styled.div<ISeedProps>(
   (props) => `
   visibility: ${props.virtual ? "hidden": "visible"};
-  padding: 1em 1.5em;
+  padding: 2.5em 1.5em;
   min-width: 225px;
   width:100%;
   position: relative;

@@ -4,6 +4,9 @@ import {RoundTitle} from "../react-brackets/components/round";
 import {Seed} from "../react-brackets/brackets/Seed";
 import {DoubleElimination, SingleElimination} from "../react-brackets/brackets";
 import {etapData} from "./etapDataFixture";
+import {DefaultSeed} from "../react-brackets/brackets/DefaultSeed/DefaultSeed"
+import {Box} from "@mui/material";
+import EditableTextField from "../react-brackets/brackets/DefaultSeed/EditableTextField";
 
 const CustomSeed = (props: IRenderSeedProps) => {
   const contest = etapData.contests.find(x=>x.id === props.seed.id);
@@ -18,29 +21,39 @@ const CustomSeed = (props: IRenderSeedProps) => {
   }
   const extraContest = getExtraContest();
 
-  const extraContestFC = <> {extraContest ? (<SeedItem style={{width: "100%"}}>
-          <div style={{width: "100%"}}>
-            <SeedTeam>{extraContest?.contest_members[0].id || "NO TEAM"}</SeedTeam>
-            <SeedTeam>{extraContest?.contest_members[1].id || "NO TEAM"}</SeedTeam>
-          </div>
-        </SeedItem>) : <button>Add contest</button>} </>;
+  // const extraContestFC = <> {extraContest ? (<SeedItem style={{width: "100%"}}>
+  //         <div style={{width: "100%"}}>
+  //           <SeedTeam>{extraContest?.contest_members[0].id || "NO TEAM"}</SeedTeam>
+  //           <SeedTeam>{extraContest?.contest_members[1].id || "NO TEAM"}</SeedTeam>
+  //         </div>
+  //       </SeedItem>) : <button>Add contest</button>} </>;
   return (
       <Seed {...props}>
-           {props.seed.id === lastRoundSeeds[lastRoundSeeds.length-1].id && lastRound.final ? <div style={{visibility: "hidden", margin: '1em'}}>{extraContestFC}</div> : null}
-        <SeedItem>
-          <div>
-            <SeedTeam>{contest?.contest_members[0].id || "NO TEAM"}</SeedTeam>
-            <SeedTeam>{contest?.contest_members[1].id || "NO TEAM"}</SeedTeam>
-          </div>
-        </SeedItem>
-           {props.seed.id === lastRoundSeeds[lastRoundSeeds.length-1].id && lastRound.final ? <div style={{margin: '1em', width: '100%'}}>{extraContestFC}</div> : null}
+           <DefaultSeed {...props}/>
+           {
+               props.seed.id === lastRoundSeeds[lastRoundSeeds.length-1].id && lastRound.final
+               ?
+               <Box style={{position: "absolute", left: "50%", width: "80%", transform: "translateX(-50%) translateY(300%)"}}>{<DefaultSeed {...props}/>}</Box> : null
+           }
       </Seed>
   );
  }
 
  const RoundTitleComponent = (id: number, idx: number) => {
    const round = etapData.etap_tours.find(x=> x.id === id)
-   return (<RoundTitle>{round?.name}</RoundTitle>);
+   return (
+       <Box style={{height: "3em", paddingBottom: "4em"}}>
+           {/*<RoundTitle>{round?.name}</RoundTitle>*/}
+           <EditableTextField
+              text={round?.name?? ''}
+              hint={"Enter tour name"}
+              fitText={false}
+              sizes={{ font: 14, resize: 0, inputWidth: 250 }}
+              onSave={(newName) => {}}
+              style={{ width: "100%" }}
+              boxProps={{ sx: {justifyContent: "center"} }}
+            />
+       </Box>);
  }
 
 const Bracket = () => {
